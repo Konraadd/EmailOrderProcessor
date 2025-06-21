@@ -1,0 +1,27 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: myapp-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: myappdb
+      MYSQL_USER: myappuser
+      MYSQL_PASSWORD: myapppass
+    volumes:
+      - mysql_data:/var/lib/mysql
+  webapp:
+    build:
+        context: .
+        dockerfile: Dockerfile    
+    depends_on:
+      - mysql
+    environment:
+      - ConnectionStrings__DefaultConnection=server=myapp-mysql;port=3306;database=myappdb;user=myappuser;password=myapppass
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

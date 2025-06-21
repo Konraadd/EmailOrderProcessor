@@ -1,0 +1,36 @@
+﻿@inherits LayoutComponentBase
+@using Domain.Entities
+@using Domain.ServicesAbstraction
+@using Radzen
+@using Radzen.Blazor
+@inject IOrderDataProvider OrderDataProvider
+
+<head>
+    ...
+    <link href="_content/Radzen.Blazor/css/default.css" rel="stylesheet" />
+</head>
+
+
+<h3>Order Data Grid</h3>
+
+<RadzenDataGrid TItem="OrderData" Data="@orders" AllowPaging="true" PageSize="10" AllowSorting="true" AllowFiltering="true" FilterMode="FilterMode.Simple">
+    <Columns>
+        <RadzenDataGridColumn TItem="OrderData" Property="ItemName" Title="Item Name" />
+        <RadzenDataGridColumn TItem="OrderData" Property="AmountOrdered" Title="Amount Ordered" />
+        <RadzenDataGridColumn TItem="OrderData" Property="Price" Title="Price" FormatString="{0:C}" />
+    </Columns>
+</RadzenDataGrid>
+
+@if (orders == null)
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    private List<OrderData>? orders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await OrderDataProvider.GetOrderData();
+    }
+}
