@@ -8,8 +8,11 @@ services:
       MYSQL_DATABASE: myappdb
       MYSQL_USER: myappuser
       MYSQL_PASSWORD: myapppass
+    ports:
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+
   webapp:
     build:
         context: .

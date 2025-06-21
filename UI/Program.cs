@@ -1,6 +1,8 @@
 using Application.Services;
 using Domain.ConfigurationOptions;
+using Domain.Repositories;
 using Domain.ServicesAbstraction;
+using Infrastructure.Database.Repositories;
 using Infrastructure.Email;
 using Microsoft.EntityFrameworkCore;
 using UI.Components;
@@ -12,6 +14,8 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddScoped<IEmailService, ImapEmailService>();
 builder.Services.AddScoped<IOrderDataProvider, OrderDataProvider>();
+builder.Services.AddScoped<IEmailRepository, EmailRepository>();
+
 builder.Services.AddHttpClient<IEmailOrderParser, GptEmailOrderParser>();
 
 builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("EmailOptions"));
